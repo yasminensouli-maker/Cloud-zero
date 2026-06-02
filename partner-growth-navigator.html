@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Services Path — Partner Growth Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161e2b;
+    --ink-2:#1d2735;
+    --panel:#212d3e;
+    --panel-2:#26334699;
+    --line:#33445c;
+    --line-soft:#2a384c;
+    --text:#e9eef4;
+    --muted:#93a1b5;
+    --muted-2:#6b7a90;
+    --orange:#ff9900;
+    --orange-soft:#ffb84d;
+    --teal:#46d6c6;
+    --green:#7ed957;
+    --red:#ff6b6b;
+    --shadow:0 18px 40px -18px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'IBM Plex Sans',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #243b4a 0, transparent 60%),
+      radial-gradient(900px 500px at 0% 0%, #1c3a44 0, transparent 55%),
+      var(--ink);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+  /* ---------- header ---------- */
+  header{
+    border-bottom:1px solid var(--line-soft);
+    padding:30px 0 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";position:absolute;right:-60px;top:-40px;width:280px;height:280px;
+    background:radial-gradient(circle, rgba(255,153,0,.10), transparent 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--orange);margin-bottom:12px;
+  }
+  h1{
+    font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(26px,4.4vw,42px);
+    letter-spacing:-.02em;line-height:1.04;max-width:760px;
+  }
+  h1 .dim{color:var(--muted)}
+  .sub{color:var(--muted);font-size:15.5px;max-width:620px;margin-top:14px;font-weight:300}
+
+  /* ---------- top metrics ---------- */
+  .topbar{
+    display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:1px;
+    background:var(--line-soft);border:1px solid var(--line-soft);
+    border-radius:14px;overflow:hidden;margin:26px 0 4px;
+  }
+  .metric{background:var(--ink-2);padding:18px 20px}
+  .metric .lab{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted-2);margin-bottom:9px}
+  .metric .val{font-family:'Archivo',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em}
+  .metric .val small{font-size:13px;color:var(--muted);font-weight:400}
+  .bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:11px}
+  .bar i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--orange),var(--orange-soft));
+    transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+  .stagepill{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--teal)}
+  .stagepill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--teal);
+    box-shadow:0 0 0 4px rgba(70,214,198,.18)}
+
+  /* ---------- next move ---------- */
+  .nextmove{
+    margin:20px 0 36px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg,#2a2110 0,#221d14 100%);
+    padding:18px 22px;display:flex;gap:18px;align-items:flex-start;
+    box-shadow:var(--shadow);position:relative;
+  }
+  .nextmove::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;
+    border-radius:99px;background:var(--orange)}
+  .nm-ic{font-family:'Archivo';font-weight:800;color:var(--orange);font-size:13px;
+    letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;padding-top:2px;
+    flex-shrink:0}
+  .nm-body h3{font-family:'Archivo';font-weight:700;font-size:18px;margin-bottom:4px}
+  .nm-body p{color:var(--muted);font-size:14px;max-width:680px}
+  .nm-body p b{color:var(--text);font-weight:600}
+
+  /* ---------- layout ---------- */
+  .grid{display:grid;grid-template-columns:248px 1fr;gap:30px;padding-bottom:60px}
+
+  /* rail */
+  .rail{position:relative}
+  .rail .track{position:absolute;left:15px;top:18px;bottom:18px;width:2px;background:var(--line)}
+  .rail .track i{position:absolute;left:0;top:0;width:100%;background:linear-gradient(var(--teal),var(--orange));
+    transition:height 1s ease;border-radius:99px}
+  .stage{position:relative;padding:0 0 6px 44px;cursor:pointer;margin-bottom:18px}
+  .stage .node{position:absolute;left:7px;top:2px;width:18px;height:18px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--line);transition:.25s;z-index:2}
+  .stage.done .node{background:var(--teal);border-color:var(--teal)}
+  .stage.current .node{border-color:var(--orange);background:var(--ink);
+    box-shadow:0 0 0 5px rgba(255,153,0,.16)}
+  .stage.done .node::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;
+    justify-content:center;font-size:11px;color:var(--ink);font-weight:700}
+  .stage .n{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.14em;color:var(--muted-2);
+    text-transform:uppercase}
+  .stage .t{font-family:'Archivo';font-weight:600;font-size:15.5px;margin-top:1px;color:var(--muted);
+    transition:.2s}
+  .stage.current .t,.stage.done .t{color:var(--text)}
+  .stage.active .t{color:var(--orange)}
+  .stage:hover .t{color:var(--text)}
+  .stage .s{font-size:11.5px;color:var(--muted-2);margin-top:2px}
+
+  .rail-foot{margin-top:8px;padding:14px 16px;border:1px dashed var(--line);border-radius:12px}
+  .rail-foot .h{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted-2);margin-bottom:6px}
+  .rail-foot button{width:100%;background:transparent;border:1px solid var(--line);color:var(--muted);
+    font-family:'IBM Plex Sans';font-size:12.5px;padding:8px;border-radius:8px;cursor:pointer;transition:.2s}
+  .rail-foot button:hover{border-color:var(--red);color:var(--red)}
+
+  /* main panel */
+  .panel{min-height:400px}
+  .p-head{border-bottom:1px solid var(--line-soft);padding-bottom:18px;margin-bottom:22px}
+  .p-head .n{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:8px}
+  .p-head h2{font-family:'Archivo';font-weight:800;font-size:28px;letter-spacing:-.02em}
+  .p-head p{color:var(--muted);margin-top:8px;font-size:14.5px;max-width:640px;font-weight:300}
+
+  .gate{display:flex;gap:14px;align-items:center;background:var(--ink-2);border:1px solid var(--line-soft);
+    border-radius:12px;padding:16px 18px;margin-bottom:24px}
+  .gate .gk{flex:1}
+  .gate .gk .gl{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted-2);margin-bottom:4px}
+  .gate .gk .gt{font-weight:500;font-size:14.5px}
+  .toggle{flex-shrink:0;width:54px;height:30px;border-radius:99px;background:var(--line);
+    border:none;cursor:pointer;position:relative;transition:.25s}
+  .toggle::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;
+    background:#fff;transition:.25s}
+  .toggle.on{background:var(--teal)}
+  .toggle.on::after{left:27px}
+
+  .sec-h{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:26px 0 14px;display:flex;align-items:center;gap:10px}
+  .sec-h::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+
+  /* requirement steppers */
+  .req{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .req:last-child{border-bottom:none}
+  .req .info{flex:1}
+  .req .info .rt{font-weight:500;font-size:14.5px}
+  .req .info .rd{font-size:12.5px;color:var(--muted-2);margin-top:2px}
+  .stepper{display:flex;align-items:center;gap:0;background:var(--ink-2);border:1px solid var(--line);
+    border-radius:9px;overflow:hidden;flex-shrink:0}
+  .stepper button{width:34px;height:34px;background:transparent;border:none;color:var(--muted);
+    font-size:18px;cursor:pointer;transition:.15s;font-family:'Archivo'}
+  .stepper button:hover{background:var(--line);color:var(--text)}
+  .stepper .count{font-family:'IBM Plex Mono';font-weight:600;font-size:14px;min-width:54px;text-align:center;
+    padding:0 4px}
+  .stepper .count.met{color:var(--green)}
+  .stepper .count em{color:var(--muted-2);font-style:normal;font-size:12px}
+  .num-in{background:var(--ink-2);border:1px solid var(--line);border-radius:9px;color:var(--text);
+    font-family:'IBM Plex Mono';font-size:14px;padding:8px 12px;width:130px;text-align:right}
+  .num-in:focus{outline:none;border-color:var(--orange)}
+  .req .met-tag{font-family:'IBM Plex Mono';font-size:10px;color:var(--green);letter-spacing:.08em}
+
+  /* benefits */
+  .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+  .bcard{background:var(--panel-2);border:1px solid var(--line-soft);border-radius:10px;padding:13px 14px}
+  .bcard .bt{font-weight:500;font-size:13.5px}
+  .bcard .bd{font-size:11.5px;color:var(--muted-2);margin-top:3px;line-height:1.4}
+
+  /* parallel tracks */
+  .tracks{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}
+  .tcard{border:1px solid var(--line-soft);border-radius:14px;padding:20px;background:var(--ink-2)}
+  .tcard h4{font-family:'Archivo';font-weight:700;font-size:16px;display:flex;align-items:center;gap:9px}
+  .badge{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 8px;border-radius:99px;font-weight:600}
+  .badge.locked{background:#2a3445;color:var(--muted-2)}
+  .badge.open{background:rgba(126,217,87,.15);color:var(--green)}
+  .badge.go{background:rgba(255,153,0,.16);color:var(--orange-soft)}
+  .tcard .desc{font-size:13px;color:var(--muted);margin:10px 0 14px;font-weight:300}
+
+  .ace-req{display:flex;align-items:center;gap:11px;padding:9px 0;font-size:13.5px;cursor:pointer;
+    border-bottom:1px solid var(--line-soft)}
+  .ace-req:last-child{border-bottom:none}
+  .chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);flex-shrink:0;transition:.2s;
+    display:flex;align-items:center;justify-content:center}
+  .ace-req.on .chk{background:var(--teal);border-color:var(--teal)}
+  .ace-req.on .chk::after{content:"✓";font-size:12px;color:var(--ink);font-weight:700}
+  .ace-req.on .lbl{color:var(--text)}
+  .ace-req .lbl{color:var(--muted);flex:1}
+  .ace-req .lbl b{color:var(--text);font-weight:600}
+
+  .fund-row{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+  .fund-row:last-child{border-bottom:none}
+  .fund-row .dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0;background:var(--line)}
+  .fund-row.open .dot{background:var(--green);box-shadow:0 0 0 4px rgba(126,217,87,.14)}
+  .fund-row .fk{flex:1}
+  .fund-row .fk .fn{font-weight:500;font-size:14px}
+  .fund-row .fk .fn .amt{font-family:'IBM Plex Mono';color:var(--orange-soft);font-size:12.5px;margin-left:6px}
+  .fund-row .fk .fd{font-size:12px;color:var(--muted-2);margin-top:3px}
+  .fund-row.locked{opacity:.5}
+  .fund-row .stat{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.06em;flex-shrink:0;padding-top:2px}
+  .fund-row.open .stat{color:var(--green)}
+  .fund-row.locked .stat{color:var(--muted-2)}
+
+  .motions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  .motion{border:1px solid var(--line-soft);border-radius:12px;padding:16px;background:var(--panel-2)}
+  .motion .mh{font-family:'Archivo';font-weight:700;font-size:15px;color:var(--teal)}
+  .motion .md{font-size:12.5px;color:var(--muted);margin-top:6px;font-weight:300}
+
+  footer{border-top:1px solid var(--line-soft);padding:22px 0 40px;color:var(--muted-2);font-size:12px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer .src{font-family:'IBM Plex Mono'}
+
+  @media(max-width:880px){
+    .grid{grid-template-columns:1fr}
+    .rail .track{display:none}
+    .rail{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+    .stage{padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin:0;min-width:150px}
+    .stage .node{display:none}
+    .rail-foot{display:none}
+    .topbar{grid-template-columns:1fr}
+    .tracks{grid-template-columns:1fr}
+    .motions{grid-template-columns:1fr}
+  }
+  .fade{animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">AWS Services Path · Consulting Partners</div>
+    <h1>Partner Growth Navigator <span class="dim">— find where you are, and the one thing to do next.</span></h1>
+    <p class="sub">Built from the AWS Services Path. Mark what you've completed and the tool shows your stage, the gap to the next one, and the funding and co-sell unlocks you may be leaving on the table.</p>
+
+    <div class="topbar">
+      <div class="metric">
+        <div class="lab">Current stage</div>
+        <div class="val"><span class="stagepill" id="m-stage">Registered</span></div>
+        <div class="bar"><i id="m-bar"></i></div>
+      </div>
+      <div class="metric">
+        <div class="lab">Journey complete</div>
+        <div class="val"><span id="m-pct">0</span><small>% of gating items</small></div>
+      </div>
+      <div class="metric">
+        <div class="lab">APN fee math</div>
+        <div class="val">+$1,000 <small>net</small></div>
+        <div class="lab" style="margin-top:8px;text-transform:none;letter-spacing:0">$2,500 fee → $3,500 credits back</div>
+      </div>
+    </div>
+
+    <div class="nextmove">
+      <div class="nm-ic">Next move →</div>
+      <div class="nm-body">
+        <h3 id="nm-title">Accept the APN Terms &amp; Conditions</h3>
+        <p id="nm-text">Create an account on AWS Partner Central with your company email and accept the APN T&amp;Cs. This registers your organization and makes you the Alliance Lead.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <!-- LEFT RAIL -->
+    <aside class="rail" id="rail">
+      <div class="track"><i id="rail-fill"></i></div>
+      <!-- stages injected -->
+      <div id="rail-stages"></div>
+      <div class="rail-foot">
+        <div class="h">Saved automatically</div>
+        <button id="reset">Reset my progress</button>
+      </div>
+    </aside>
+
+    <!-- MAIN PANEL -->
+    <main class="panel" id="panel"></main>
+  </div>
+</div>
+
+<div class="wrap">
+  <footer>
+    <span>An interactive tool for AWS consulting partners. Self-reported — verify status in AWS Partner Central.</span>
+    <span class="src">Source: AWS Services Path Partner Handbook, Jun 2025</span>
+  </footer>
+</div>
+
+<script>
+/* ---------------- MODEL ---------------- */
+const STAGES = [
+  {id:'registered', n:'Stage 01', t:'Registered', s:'Account created',
+   gate:'Accept the APN Terms & Conditions', toggle:true,
+   blurb:'Your entry point. Create a Partner Central account with your company email and accept the APN T&Cs — you become your company\u2019s Alliance Lead.',
+   benefits:[
+     ['ACE Pipeline Manager','Share opportunities with AWS account teams.'],
+     ['AWS Blueprints','Reference architectures to build against.'],
+     ['Well-Architected Tools','Review workloads against AWS best practice.'],
+     ['Training credits & discounts','Lower the cost of certifying your team.']
+   ]},
+  {id:'enrolled', n:'Stage 02', t:'Enrolled', s:'Path chosen',
+   gate:'Enroll in the Services Path', toggle:true,
+   blurb:'Choose the Services Path in Partner Central. If it isn\u2019t showing, add your consulting, managed, or professional services under \u201Cwhat do you offer\u201D first. Paths are independent — progress here doesn\u2019t move you on any other path.',
+   benefits:[
+     ['Foundational Technical Review tools','Validate and publish service solutions.'],
+     ['APN Navigate Library','Role-based guidance for your journey.'],
+     ['APN Marketing Resources','Partner-ready campaign material.']
+   ]},
+  {id:'confirmed', n:'Stage 03', t:'Confirmed', s:'APN fee paid',
+   gate:'Pay the $2,500 annual APN fee', toggle:true,
+   blurb:'Pay the annual APN program fee through Billing & Cost Management. You get $3,500 in AWS promotional credits back — a net gain of $1,000. This fee is required before you can reach Validated / Select tier.',
+   benefits:[
+     ['Innovation Sandbox Credits','Credits to build or migrate solutions.'],
+     ['Marketing Central','Prebuilt campaigns, refreshed by AWS.'],
+     ['Promotional credits','The $3,500 returned on your fee.'],
+     ['Free trials','Trial entitlements for your solutions.']
+   ]},
+  {id:'validated', n:'Stage 04', t:'Validated', s:'Select+ tier',
+   gate:null,
+   blurb:'Reach Select tier by clearing two sets of bars: Knowledge (accreditations + certifications) and Experience (launched, partner-originated opportunities). \u201CLaunched\u201D means the project is complete and billing has started.',
+   benefits:[
+     ['Partner badges','Show your validated status publicly.'],
+     ['Proof of Concept funds','Up to 10% of expected 12-month spend.'],
+     ['Press release eligibility','Co-branded announcements with AWS.'],
+     ['Partner Solutions Finder','Customers can discover you by use case.'],
+     ['AWS Partner Programs','Door opens to competencies and designations.']
+   ]},
+  {id:'differentiated', n:'Stage 05', t:'Differentiated', s:'Competency earned',
+   gate:'Earn a Competency or Service Delivery designation', toggle:true,
+   blurb:'The top of the path. Earn a specialization through a Program or Competency — vetted by AWS technical teams — that signals what you do best and who you do it for. This also unlocks ACE Eligibility and the strongest funding.',
+   benefits:[
+     ['APN Blog posts','Publish wins on a high-traffic AWS channel.'],
+     ['Migration Acceleration Program','Funding for migration & modernization.'],
+     ['ACE Eligibility','Receive leads from AWS, not just send them.']
+   ]}
+];
+
+const DEFAULT = {
+  registered:false, enrolled:false, confirmed:false, differentiated:false,
+  k:{sales:0, tech:0, cloud:0, techcert:0},
+  e:{opps:0, mrr:0},
+  ace:{opps:0, tnc:false, prog:false, updates:false},
+  view:'registered'
+};
+let S = JSON.parse(JSON.stringify(DEFAULT));
+
+/* ---------------- PERSISTENCE ---------------- */
+const KEY='apn-navigator-v1';
+async function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+}
+async function load(){
+  try{
+    const r = localStorage.getItem(KEY);
+    if(r){ S = Object.assign(JSON.parse(JSON.stringify(DEFAULT)), JSON.parse(r)); }
+  }catch(e){}
+}
+
+/* ---------------- DERIVED ---------------- */
+function knowledgeMet(){return S.k.sales>=2 && S.k.tech>=2 && S.k.cloud>=2 && S.k.techcert>=2;}
+function experienceMet(){return S.e.opps>=3 && S.e.mrr>=1500;}
+function validated(){return S.confirmed && knowledgeMet() && experienceMet();}
+function currentStageId(){
+  if(S.differentiated && validated()) return 'differentiated';
+  if(validated()) return 'validated';
+  if(S.confirmed) return 'confirmed';
+  if(S.enrolled) return 'enrolled';
+  if(S.registered) return 'registered';
+  return null;
+}
+function stageIndex(id){return STAGES.findIndex(s=>s.id===id);}
+function isDone(id){
+  if(id==='validated') return validated();
+  if(id==='differentiated') return S.differentiated && validated();
+  return S[id];
+}
+function progressPct(){
+  // 10 gating items
+  let done=0;
+  done += S.registered?1:0;
+  done += S.enrolled?1:0;
+  done += S.confirmed?1:0;
+  done += S.k.sales>=2?1:0;
+  done += S.k.tech>=2?1:0;
+  done += S.k.cloud>=2?1:0;
+  done += S.k.techcert>=2?1:0;
+  done += S.e.opps>=3?1:0;
+  done += S.e.mrr>=1500?1:0;
+  done += (S.differentiated&&validated())?1:0;
+  return Math.round(done/10*100);
+}
+function aceReady(){
+  return validated() && S.ace.opps>=10 && S.ace.tnc && S.ace.prog && S.ace.updates;
+}
+
+/* ---------------- NEXT MOVE ENGINE ---------------- */
+function nextMove(){
+  if(!S.registered) return ['Accept the APN Terms & Conditions',
+    'Create an account on AWS Partner Central with your company email and accept the APN T&Cs. You become your organization\u2019s Alliance Lead.'];
+  if(!S.enrolled) return ['Enroll in the Services Path',
+    'Log into Partner Central and click <b>Enroll in the Services Path</b>. If it isn\u2019t visible, add your consulting / managed / professional services under your APN account first.'];
+  if(!S.confirmed) return ['Pay the $2,500 APN program fee',
+    'This is the gate to Select tier. You get <b>$3,500 in credits back</b>, so the fee nets you +$1,000. Pay it through Billing & Cost Management after linking your accounts.'];
+  if(!validated()){
+    // find the closest gap
+    const gaps=[];
+    if(S.k.sales<2) gaps.push(`${2-S.k.sales} more sales accreditation${2-S.k.sales>1?'s':''}`);
+    if(S.k.tech<2) gaps.push(`${2-S.k.tech} more technical accreditation${2-S.k.tech>1?'s':''}`);
+    if(S.k.cloud<2) gaps.push(`${2-S.k.cloud} more Cloud Practitioner cert${2-S.k.cloud>1?'s':''}`);
+    if(S.k.techcert<2) gaps.push(`${2-S.k.techcert} more technical cert${2-S.k.techcert>1?'s':''}`);
+    if(S.e.opps<3) gaps.push(`${3-S.e.opps} more launched partner-originated opportunit${3-S.e.opps>1?'ies':'y'}`);
+    if(S.e.mrr<1500) gaps.push(`$${(1500-S.e.mrr).toLocaleString()} more in combined MRR`);
+    return ['Close the gap to Validated (Select tier)',
+      `You\u2019re short on: <b>${gaps.join(', ')}</b>. Knowledge bars are won by certifying your team; experience bars are won by launching ACE opportunities (project complete, billing started).`];
+  }
+  if(!S.differentiated) return ['Earn a Competency or Service Delivery designation',
+    'You\u2019re Validated. The next lever is a specialization — it signals domain expertise, unlocks the APN Blog and Migration Acceleration Program, and is required for ACE Eligibility.'];
+  if(!aceReady()){
+    const g=[];
+    if(S.ace.opps<10) g.push(`${10-S.ace.opps} more validated opportunities in a 12-month window`);
+    if(!S.ace.tnc) g.push('accept the ACE Terms & Conditions');
+    if(!S.ace.prog) g.push('confirm in a Differentiation Program');
+    if(!S.ace.updates) g.push('commit to providing ACE referral updates');
+    return ['Unlock ACE Eligibility — receive leads from AWS',
+      `Until now you send opportunities to AWS. ACE Eligibility lets AWS send leads to <b>you</b>. Remaining: <b>${g.join('; ')}</b>.`];
+  }
+  return ['You\u2019ve reached the top of the path',
+    'Differentiated and ACE-eligible. From here it\u2019s depth: more competencies, Marketplace listings, and a repeatable co-sell motion with AWS field teams. Keep opportunities updated biweekly to stay in flow.'];
+}
+
+/* ---------------- RENDER ---------------- */
+function renderRail(){
+  const cur=currentStageId();
+  const host=document.getElementById('rail-stages');
+  host.innerHTML = STAGES.map(st=>{
+    const done=isDone(st.id);
+    const isCur = st.id===cur;
+    const active = st.id===S.view;
+    return `<div class="stage ${done?'done':''} ${isCur?'current':''} ${active?'active':''}" data-id="${st.id}">
+      <div class="node"></div>
+      <div class="n">${st.n}</div>
+      <div class="t">${st.t}</div>
+      <div class="s">${st.s}</div>
+    </div>`;
+  }).join('');
+  host.querySelectorAll('.stage').forEach(el=>{
+    el.onclick=()=>{S.view=el.dataset.id; save(); render();};
+  });
+  // fill the rail line up to current stage
+  const idx = cur? stageIndex(cur):-1;
+  const pct = idx<0?0: (idx/(STAGES.length-1))*100;
+  document.getElementById('rail-fill').style.height = pct+'%';
+}
+
+function stepperRow(label,desc,val,target,keyPath){
+  const met = val>=target;
+  return `<div class="req">
+    <div class="info"><div class="rt">${label}</div><div class="rd">${desc}</div></div>
+    ${met?'<span class="met-tag">✓ met</span>':''}
+    <div class="stepper" data-key="${keyPath}" data-target="${target}">
+      <button data-d="-1">−</button>
+      <span class="count ${met?'met':''}">${val} <em>/ ${target}</em></span>
+      <button data-d="1">+</button>
+    </div>
+  </div>`;
+}
+
+function renderPanel(){
+  const st = STAGES.find(s=>s.id===S.view);
+  const panel = document.getElementById('panel');
+  let html = `<div class="fade">
+    <div class="p-head">
+      <div class="n">${st.n} · ${isDone(st.id)?'Complete':'In progress / locked'}</div>
+      <h2>${st.t}</h2>
+      <p>${st.blurb}</p>
+    </div>`;
+
+  // GATE (simple toggle stages)
+  if(st.toggle){
+    const on = S[st.id];
+    html += `<div class="gate">
+      <div class="gk"><div class="gl">Gate to clear</div><div class="gt">${st.gate}</div></div>
+      <button class="toggle ${on?'on':''}" id="gate-toggle"></button>
+    </div>`;
+  }
+
+  // VALIDATED — the live tracker
+  if(st.id==='validated'){
+    html += `<div class="sec-h">Knowledge requirements</div>`;
+    html += stepperRow('Sales accreditations','Partner-team sales accreditation',S.k.sales,2,'k.sales');
+    html += stepperRow('Technical accreditations','Partner-team technical accreditation',S.k.tech,2,'k.tech');
+    html += stepperRow('Cloud Practitioner certifications','Foundational AWS certification',S.k.cloud,2,'k.cloud');
+    html += stepperRow('Technical certifications','Associate-level or higher',S.k.techcert,2,'k.techcert');
+
+    html += `<div class="sec-h">Experience requirements</div>`;
+    html += stepperRow('Launched partner-originated opportunities','Project complete, billing started',S.e.opps,3,'e.opps');
+    const mrrMet = S.e.mrr>=1500;
+    html += `<div class="req">
+      <div class="info"><div class="rt">Combined monthly recurring revenue</div>
+      <div class="rd">Across your launched opportunities — minimum $1,500</div></div>
+      ${mrrMet?'<span class="met-tag">✓ met</span>':''}
+      <input class="num-in" id="mrr-in" type="number" min="0" step="100" value="${S.e.mrr}" placeholder="$ MRR">
+    </div>`;
+
+    const v = validated();
+    html += `<div class="gate" style="margin-top:22px;border-color:${v?'var(--green)':'var(--line)'}">
+      <div class="gk"><div class="gl">Validated status</div>
+      <div class="gt">${v?'All bars cleared — you are at Select tier.':'Bars remaining above. Validated unlocks when all are met.'}</div></div>
+      <span class="badge ${v?'open':'locked'}">${v?'Validated':'Locked'}</span>
+    </div>`;
+  }
+
+  // benefits
+  html += `<div class="sec-h">What this stage unlocks</div><div class="bgrid">`;
+  html += st.benefits.map(b=>`<div class="bcard"><div class="bt">${b[0]}</div><div class="bd">${b[1]}</div></div>`).join('');
+  html += `</div>`;
+
+  // PARALLEL TRACKS — show on every panel as a persistent reference
+  html += renderTracks();
+
+  // motions
+  html += `<div class="sec-h">The three motions, end to end</div>
+    <div class="motions">
+      <div class="motion"><div class="mh">Co-Build</div><div class="md">Build your skills and solutions in scope of AWS — certifications, FTR, Marketplace listing.</div></div>
+      <div class="motion"><div class="mh">Co-Market</div><div class="md">Position the partnership in front of AWS customers and field teams to surface co-sell candidates.</div></div>
+      <div class="motion"><div class="mh">Co-Sell</div><div class="md">Work opportunities jointly through ACE — share, get an account manager tagged, update biweekly.</div></div>
+    </div>`;
+
+  html += `</div>`;
+  panel.innerHTML = html;
+  wirePanel();
+}
+
+function renderTracks(){
+  const cur = currentStageId();
+  const curIdx = cur? stageIndex(cur) : -1;
+  // funding rules keyed to minimum stage index
+  const FUND=[
+    {n:'Innovation Sandbox Credits',amt:'up to 3 mo costs',d:'Credits to build or migrate solutions onto AWS.',min:2},
+    {n:'Customer Engagement Incentive',amt:'$1K scope / $5K launch',d:'For engaging greenfield customers as a Services partner.',min:1},
+    {n:'Marketing Development Funds',amt:'cash / credits',d:'Scales with designations earned — strongest once Validated.',min:3},
+    {n:'Proof of Concept funds',amt:'up to 10% of 12-mo spend',d:'For customers not yet committed. Validated stage or higher.',min:3},
+    {n:'Migration Acceleration Program',amt:'milestone funding',d:'Funds migration & modernization. Differentiated benefit.',min:4}
+  ];
+  const fundRows = FUND.map(f=>{
+    const open = curIdx>=f.min;
+    const unlockAt = STAGES[f.min].t;
+    return `<div class="fund-row ${open?'open':'locked'}">
+      <div class="dot"></div>
+      <div class="fk"><div class="fn">${f.n}<span class="amt">${f.amt}</span></div><div class="fd">${f.d}</div></div>
+      <div class="stat">${open?'AVAILABLE':'@ '+unlockAt.toUpperCase()}</div>
+    </div>`;
+  }).join('');
+
+  // ACE
+  const v = validated();
+  const aceItems=[
+    ['opps-counter',null,`<b>10 validated opportunities</b> in a rolling 12-month window <span style="color:var(--muted-2)">(${S.ace.opps}/10 — closed-lost don\u2019t count)</span>`],
+    ['tnc','tnc','Accept the <b>ACE Terms & Conditions</b>'],
+    ['prog','prog','Confirmed in an <b>AWS Differentiation Program</b>'],
+    ['updates','updates','Commit to <b>providing updates</b> on ACE referrals']
+  ];
+  let aceHtml = '';
+  // opps stepper
+  aceHtml += `<div class="ace-req ${S.ace.opps>=10?'on':''}" style="cursor:default">
+    <div class="chk"></div>
+    <div class="lbl"><b>10 validated opportunities</b> in a rolling 12 months <span style="color:var(--muted-2)">closed-lost excluded</span></div>
+    <div class="stepper" data-key="ace.opps" data-target="10" style="transform:scale(.85)">
+      <button data-d="-1">−</button><span class="count">${S.ace.opps} <em>/10</em></span><button data-d="1">+</button>
+    </div>
+  </div>`;
+  ['tnc','prog','updates'].forEach(k=>{
+    const labels={tnc:'Accept the <b>ACE Terms & Conditions</b>',prog:'Confirmed in an <b>AWS Differentiation Program</b>',updates:'Commit to <b>providing updates</b> on ACE referrals'};
+    aceHtml += `<div class="ace-req ${S.ace[k]?'on':''}" data-ace="${k}">
+      <div class="chk"></div><div class="lbl">${labels[k]}</div></div>`;
+  });
+
+  const aceBadge = !v ? ['locked','Needs Validated'] : aceReady()? ['open','Eligible'] : ['go','In progress'];
+
+  return `<div class="sec-h">Parallel tracks — easy to leave on the table</div>
+  <div class="tracks">
+    <div class="tcard">
+      <h4>ACE Eligibility <span class="badge ${aceBadge[0]}">${aceBadge[1]}</span></h4>
+      <div class="desc">Sending opportunities to AWS is the default. Eligibility flips it — AWS sends qualified leads to you. Requires Validated first.</div>
+      ${aceHtml}
+    </div>
+    <div class="tcard">
+      <h4>Funding you can access <span class="badge ${curIdx>=1?'go':'locked'}">${curIdx>=1?'Stage-gated':'Get on the path'}</span></h4>
+      <div class="desc">Each program opens at a stage. Greyed rows show what unlocks them.</div>
+      ${fundRows}
+    </div>
+  </div>`;
+}
+
+function wirePanel(){
+  // gate toggle
+  const gt=document.getElementById('gate-toggle');
+  if(gt){
+    gt.onclick=()=>{
+      const id=S.view;
+      // enforce order for forward toggles
+      S[id]=!S[id];
+      save(); render();
+    };
+  }
+  // steppers (validated + ace opps)
+  document.querySelectorAll('.stepper').forEach(sp=>{
+    const key=sp.dataset.key, target=+sp.dataset.target;
+    sp.querySelectorAll('button').forEach(btn=>{
+      btn.onclick=()=>{
+        const d=+btn.dataset.d;
+        const parts=key.split('.');
+        let ref=S; for(let i=0;i<parts.length-1;i++) ref=ref[parts[i]];
+        const last=parts[parts.length-1];
+        ref[last]=Math.max(0, Math.min(target, ref[last]+d));
+        save(); render();
+      };
+    });
+  });
+  // mrr input
+  const mrr=document.getElementById('mrr-in');
+  if(mrr){
+    mrr.onchange=()=>{S.e.mrr=Math.max(0, +mrr.value||0); save(); render();};
+  }
+  // ace checks
+  document.querySelectorAll('[data-ace]').forEach(el=>{
+    el.onclick=()=>{const k=el.dataset.ace; S.ace[k]=!S.ace[k]; save(); render();};
+  });
+}
+
+function renderTop(){
+  const cur=currentStageId();
+  document.getElementById('m-stage').textContent = cur? STAGES.find(s=>s.id===cur).t : 'Not started';
+  const pct=progressPct();
+  document.getElementById('m-pct').textContent=pct;
+  document.getElementById('m-bar').style.width=pct+'%';
+  const [t,txt]=nextMove();
+  document.getElementById('nm-title').textContent=t;
+  document.getElementById('nm-text').innerHTML=txt;
+}
+
+function render(){ renderRail(); renderPanel(); renderTop(); }
+
+document.getElementById('reset').onclick=()=>{
+  S=JSON.parse(JSON.stringify(DEFAULT)); save(); render();
+};
+
+/* ---------------- BOOT ---------------- */
+(async function(){
+  await load();
+  if(!STAGES.find(s=>s.id===S.view)) S.view='registered';
+  render();
+})();
+</script>
+</body>
+</html>
